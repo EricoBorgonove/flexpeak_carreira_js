@@ -26,7 +26,7 @@ module.exports = {
     try {
       const imoveis = await Imovel.findAll({
         include: {
-          model: User,
+          model: Users,
           as: 'locador',
           attributes: ['id', 'nome', 'email']
         }
@@ -44,7 +44,7 @@ module.exports = {
       const { id } = req.params;
       const imovel = await Imovel.findByPk(id, {
         include: {
-          model: User,
+          model: Users,
           as: 'locador',
           attributes: ['id', 'nome', 'email']
         }
