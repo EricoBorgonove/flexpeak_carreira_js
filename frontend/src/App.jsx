@@ -86,32 +86,13 @@ export default function App() {
       <Container className="page-container">
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
 
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/imoveis"
-            element={
-              <PrivateRoute>
-                <ImoveisList />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/meus-imoveis"
-            element={
-              <PrivateRoute>
-                <ImoveisList meus />
-              </PrivateRoute>
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>}/>
+          <Route path="/imoveis" element={<PrivateRoute><ImoveisList /></PrivateRoute>}/>
+          <Route path="/meus-imoveis" element={<PrivateRoute><ImoveisList meus /></PrivateRoute>
             }
           />
           <Route
