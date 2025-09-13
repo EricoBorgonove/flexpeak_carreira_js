@@ -1,25 +1,29 @@
 const { Locacao, Users, Imovel } = require('../models');
 
 module.exports = {
-  // Criar locação — apenas locatário autenticado
+  // Criar locação — apenas locatário autenticado / agora pode locador
   async create(req, res) {
-    try {
-      const { imovel_id, data_inicio, data_fim } = req.body;
-      const usuario_id = req.usuario.id;
+  try {
+    const { imovel_id, data_inicio, data_fim } = req.body;
 
-      const locacao = await Locacao.create({
-        imovel_id,
-        usuario_id,
-        data_inicio,
-        data_fim,
-        status: 'pendente'
-      });
+    // o usuário logado (locador ou locatario)
+    const usuario_id = req.usuario.id;
 
-      res.status(201).json(locacao);
-    } catch (error) {
-      res.status(500).json({ message: 'Erro ao criar locação.', error: error.message });
-    }
-  },
+    // cria a locação
+    const locacao = await Locacao.create({
+      usuario_id,
+      imovel_id,
+      data_inicio,
+      data_fim,
+      status: "ativa"
+    });
+
+    res.status(201).json(locacao);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao criar locação", error: error.message });
+  }
+},
+
 
   // Listar locações do locatário autenticado
   async list(req, res) {
@@ -87,5 +91,26 @@ module.exports = {
     } catch (error) {
       res.status(500).json({ message: 'Erro ao cancelar locação.', error: error.message });
     }
+  },
+  // Listar imóveis do locador logado
+  async minhasLocacoes(req, res) {
+  try {
+    if (req.usuario.tipo_usuario !== 'locatario') {
+      return res.status(403).json({ message: 'Somente locatários podem acessar suas locações.' });
+    }
+
+    const locacoes = await Locacao.findAll({
+      where: { usuario_id: req.usuario.id },
+      include: {
+        model: Imovel,
+        as: 'imovel',
+        attributes: ['id', 'titulo', 'endereco', 'preco_noite']
+      }
+    });
+
+    res.json(locacoes);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao listar locações do usuário.', error: error.message });
   }
+}
 };

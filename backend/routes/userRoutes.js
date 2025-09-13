@@ -16,5 +16,7 @@ router.get('/buscar/nome', UserController.findByName)
 router.put('/:id', UserController.updateUser)
 // Deletar usuário
 router.delete('/:id', UserController.deleteUser)
+router.get('/:id', UserController.getUserById)
+// Buscar por e-mail (/user/buscar/email?email=teste@email.com)
 
 module.exports = router;

@@ -1,4 +1,6 @@
 const express = require("express")
+// importação do cors
+const cors = require('cors');
 require('dotenv').config()
 
 const userRoutes = require ('./routes/userRoutes')
@@ -11,12 +13,14 @@ const locacaoRoutes = require('./routes/locacaoRoutes');
 const app = express()
 const routes = require('./routes/routes')
 
+// habilita CORS para todas as origens
+app.use(cors());
 
 
 app.use(express.json())
 
 app.use('/', routes)
-app.use('/user', userRoutes)
+app.use('/users', userRoutes)   // alterado para o plural
 app.use('/auth', authRoutes)
 app.use('/imoveis', imovelRoutes);
 app.use('/locacoes', locacaoRoutes);

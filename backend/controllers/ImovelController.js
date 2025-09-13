@@ -80,6 +80,27 @@ module.exports = {
       res.status(500).json({ message: 'Erro ao atualizar imóvel.', error: error.message });
     }
   },
+  // Listar imóveis do locador logado
+async meusImoveis(req, res) {
+  try {
+    if (req.usuario.tipo_usuario !== 'locador') {
+      return res.status(403).json({ message: 'Somente locadores podem acessar seus imóveis.' });
+    }
+
+    const imoveis = await Imovel.findAll({
+      where: { usuario_id: req.usuario.id },
+      include: {
+        model: Users,
+        as: 'locador',
+        attributes: ['id', 'nome', 'email']
+      }
+    });
+
+    res.json(imoveis);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao listar imóveis do usuário.', error: error.message });
+  }
+},
 
   // Deletar imóvel — somente locador dono
   async remove(req, res) {
