@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextField, Button, Stack, Typography, Box } from "@mui/material";
 import { api } from "../lib/api";
 import { useNavigate } from "react-router-dom";
+import Logo from "/src/assets/images/logo-removebg-preview.png"
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,7 +31,7 @@ export default function Login() {
     <div className="page-container">
       <div className="page-card">
         <Box sx={{ mb: 2, textAlign: "center" }}>
-          <img src="/src/assets/images/logo-removebg-preview.png" alt="Logo" style={{ width: "120px" }} />
+          <img src={Logo} alt="Logo" style={{ width: "120px" }} />
         </Box>
 
         <Typography variant="h5" gutterBottom align="center">
